@@ -1,3 +1,4 @@
+<!-- TODO: to delete -->
 <html>
 	<head>
 		<title>MeLi Product Importer - User Info</title>
@@ -6,23 +7,23 @@
 		<table>
 			<tr>
 				<th>id</th>
-				<td>${id}</td>
+				<td>${meliUser.id}</td>
 			</tr>
 			<tr>
 				<th>nick</th>
-				<td>${nickname}</td>
+				<td>${meliUser.nickname}</td>
 			</tr>
 			<tr>
 				<th>name</th>
-				<td>${first_name} ${last_name}</td>
+				<td>${meliUser.name}</td>
 			</tr>
 			<tr>
 				<th>email</th>
-				<td>${email}</td>
+				<td>${meliUser.email}</td>
 			</tr>
 			<tr>
 				<th>registration date</th>
-				<td>${registration_date}</td>
+				<td>${meliUser.registrationDate}</td>
 			</tr>
 		</table>
 	</body>

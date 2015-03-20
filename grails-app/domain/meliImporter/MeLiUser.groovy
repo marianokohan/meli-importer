@@ -20,6 +20,10 @@ class MeLiUser {
 //	String registration_date; 
 	String registrationDate; //see TODO on setter
 	
+	//for test users
+	String password
+	String site_status
+	
 	public String getName() {
 		return first_name + " " + last_name;
 	}

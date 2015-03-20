@@ -12,6 +12,11 @@ class PublicationsController {
 	def index() { 
 //		def currentTime = timeApi.getCurrentTime()
 		def currentTime = '-'
+		
+		if(session.meliUser != null) {
+			return [publications: meLiService.getUserPublications(session.meliUser)]
+		}
+		
 		['currentTime' : currentTime, 'authorizationCodeUrl': meLiService.getAuthorizationUrl()]
 	}
 	
@@ -26,5 +31,19 @@ class PublicationsController {
 		}
 	}
 
+	def testUser() {
+		session.testUser = meLiService.createTestUser()
+		['authorizationCodeUrl': meLiService.getAuthorizationUrl()]
+	}
+	
+	def publish() {
+		//TODO: default values?
+	}
+	
+	def publishToMeLi() {
+		MeLiItem meliItem = new MeLiItem(params);
+		meLiService.publishItem(meliItem)
+		redirect(action: 'index')
+	}
 
 }

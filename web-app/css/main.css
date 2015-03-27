@@ -594,3 +594,26 @@ a.skip {
 	position: absolute;
 	left: -9999px;
 }
+
+
+/* added for the application */
+/* TODO: move to another file */
+
+div.itemDescription {
+	border: 1px solid black;
+	margin: 15px 0;
+	padding: 15px;
+}
+
+fieldset div {
+	margin: 3px 0;
+}
+
+fieldset label {
+	font-weight: bold;
+}
+
+fieldset hr,
+fieldset input#publish {
+	margin: 20px 0;
+}

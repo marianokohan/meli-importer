@@ -89,5 +89,6 @@ log4j = {
            'org.hibernate',
            'net.sf.ehcache.hibernate'
 		   
-	info 'meliImporter'
+    info 'meliimporter',
+		 'meliImporter'
 }

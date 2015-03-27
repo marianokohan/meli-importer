@@ -1,23 +1,28 @@
 package meliimporter
 
 import meliImporter.MeLiService
-import meliImporter.MeLiUser
 
 class PublicationsController {
 	
 	def timeApi
 	
 	MeLiService meLiService;
+	AxisService axisService;
 
 	def index() { 
 //		def currentTime = timeApi.getCurrentTime()
 		def currentTime = '-'
 		
+		List products = axisService.getProducts();
+
 		if(session.meliUser != null) {
-			return [publications: meLiService.getUserPublications(session.meliUser)]
+			return [publications: meLiService.getUserPublications(session.meliUser),
+				'products': products]
 		}
 		
-		['currentTime' : currentTime, 'authorizationCodeUrl': meLiService.getAuthorizationUrl()]
+		
+		['currentTime' : currentTime, 'authorizationCodeUrl': meLiService.getAuthorizationUrl(), 
+			'products': products]
 	}
 	
 	def login() {
@@ -36,13 +41,21 @@ class PublicationsController {
 		['authorizationCodeUrl': meLiService.getAuthorizationUrl()]
 	}
 	
-	def publish() {
-		//TODO: default values?
+	def publishTest() {
+		//TODO: to remove
 	}
 	
-	def publishToMeLi() {
-		MeLiItem meliItem = new MeLiItem(params);
-		meLiService.publishItem(meliItem)
+	def publish(int productId) {
+		//TODO: better way to obtain selected product
+		// current object -> from page/controller, or handled by the service (avoid additional get from axis api)
+		['product': axisService.getProduct(productId)]
+	}
+	
+	def publishToMeLi(int productId) {
+		//TODO: same details about current product
+		MeLiItem item = new MeLiItem(axisService.getProduct(productId));
+		item.properties = params
+		meLiService.publishItem(item)
 		redirect(action: 'index')
 	}
 

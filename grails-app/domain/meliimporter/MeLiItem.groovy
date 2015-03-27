@@ -27,5 +27,13 @@ class MeLiItem {
 	String description
 	List pictures = [].withLazyDefault { return new ItemPicture() }
 	//from http://www.mscharhag.com/2013/09/grails-data-binding-with-lists.html
-		
+	
+	public MeLiItem(AxisProduct product) {
+		//TODO: "test" items only on specific situation
+		title = "TEST_" + product.name;
+		description = product.description;
+		price = product.price;
+		//TODO: images
+	}
+			
 }

@@ -64,12 +64,17 @@ class MeLiService {
 	public getUserPublications(MeLiUser user) {
 		FluentStringsMap params = new FluentStringsMap();
 		params.add("access_token", m.getAccessToken());
+		log.info("/users/${user.id}/items/search?status=active&access_token=${m.accessToken}")
 		Response response = m.get("/users/${user.id}/items/search?status=active&access_token=${m.accessToken}", params);
-		log.info("response: " + response.getResponseBody()) //TODO: porque no trae solo los activos (funciona desde browser)??
+		log.info("response: " + response.getResponseBody()) 
+		//TODO: the response of the api using java-sdk does not filter the 'active' items - this is not reproduced on the browser 
 		def items = JSON.parse(response.getResponseBody())["results"]
 		List<MeLiItem> meLiItems = new LinkedList<MeLiItem>();
 		items.each {
-			meLiItems.add(getPublication(it))
+			//so the 'active' items are filtered here
+			MeLiItem item = getPublication(it);
+			if (item.isActive())
+				meLiItems.add(item)
 		}
 		return meLiItems
 	}
@@ -78,9 +83,6 @@ class MeLiService {
 		FluentStringsMap params = new FluentStringsMap();
 		params.add("access_token", m.getAccessToken());
 		JSON jsonItem = new JSON(item);
-		//TODO: item as json without:
-		//	class, id, thumbnail, permalink, subtitle
-//		def itemJSON = render item as JSON
 		Response response = m.post("/items?access_token=${m.accessToken}", params, jsonItem.toString());
 		log.info("publishItem response: " + response.getResponseBody()) 
 	}

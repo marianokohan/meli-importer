@@ -21,11 +21,10 @@
 			</div-->
 			<div>
 				<label>Descripcion: </label>
-				<!-- TODO: simple def. of this css class -->
 				<div class="itemDescription">${product.description}</div>
 			</div>
 			<div>
-				<!-- TODO: +1 imagen -->
+				<!-- TODO imagenes  -->
 				<label>Imagen: </label>
 				<g:textField name="pictures[0].source"/>
 			</div>
@@ -34,6 +33,7 @@
 				<span>${product.price}</span>
 			</div>
 			<hr/>
+			<!-- TODO valor init de stock  -->
 			<div>
 				<label>Cantidad: </label>
 				<g:textField name="available_quantity" value="1"/><!-- for the fixed category -->
@@ -42,7 +42,7 @@
 				<label>Garantía: </label>
 				<g:textField name="warranty"/>
 			</div>
-			
+			<!-- TODO seleccion de los siguientes campos (si aplica)  -->
 			<div>
 				<label>Moneda</label>
 				<g:textField name="currency_id" value="ARS"/>
@@ -65,7 +65,6 @@
 				<g:textField name="category_id" value="MLA86029"/>
 			</div>
 			
-			<!-- TODO (sig. paso): identificar mapeos de productos existentes => mostrar solo valor + completado de los otros -->
 			<g:submitButton name="publish" value="Publish" />
 		</fieldset>
 	</g:form>

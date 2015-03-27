@@ -27,20 +27,11 @@ class AxisService {
 		try
 		{
 		   http.auth.basic token, ''
-//		   NodeChild html = http.get( path : '/api/products',
-//		   def html = http.get( path : '/api/products',
-//			   headers: [USER_AGENT: 'Apache HTTPClient'] )
-//		   log.info("axis response: " + html.getClass())
-//		   String htmlString = new groovy.xml.StreamingMarkupBuilder().bindNode(html) as String
 		   http.get( path : '/api/products',
 			   headers: [USER_AGENT: 'Apache HTTPClient'] ) { resp, xml ->
-//			   log.info(resp.status);
-//			   log.info("${xml.products.product[0].@id}") 
-//			   log.info("${xml.products.product[0].@'xlink:href'}")
 			   xml.products.product.each { product ->
-//				   def productUrl = ${product.@'xlink:href'}
 				   def productId = Integer.parseInt("${product.@id}")
-				   if (productId < 10) { //TODO: products filtering
+				   if (productId < 20) { //TODO: products filtering
 					   products.add(getProduct(productId))
 				   }
 			   }
@@ -59,8 +50,6 @@ class AxisService {
 		   http.auth.basic token, ''
 		   http.get( path : "/api/products/${productId}",
 			   headers: [USER_AGENT: 'Apache HTTPClient'] ) { resp, xml ->
-//   			   log.info(resp.status);
-//   			   log.info("${xml.product.id.text()}")
 //			     product = new AxisProduct(XML.parse(xml.product))
 		   		 //TODO: better way than this solution (http://stackoverflow.com/questions/10068661/converting-xml-to-domain-object-in-grails)
 		   		 //			similar to json

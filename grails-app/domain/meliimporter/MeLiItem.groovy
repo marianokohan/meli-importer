@@ -2,6 +2,8 @@ package meliimporter
 
 class MeLiItem {
 
+	static String ACTIVE_STATUS = "active"
+	
     static constraints = {
     }
 	
@@ -28,12 +30,18 @@ class MeLiItem {
 	List pictures = [].withLazyDefault { return new ItemPicture() }
 	//from http://www.mscharhag.com/2013/09/grails-data-binding-with-lists.html
 	
+	String status
+	
 	public MeLiItem(AxisProduct product) {
 		//TODO: "test" items only on specific situation
-		title = "TEST_" + product.name;
+		title = "[_TESTING_] " + product.name;
 		description = product.description;
 		price = product.price;
 		//TODO: images
+	}
+	
+	public boolean isActive() {
+		return ACTIVE_STATUS.equals(status);
 	}
 			
 }

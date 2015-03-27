@@ -7,6 +7,7 @@ class BootStrap {
     def init = { servletContext ->
 		//json marshalling solution from http://manbuildswebsite.com/2010/02/15/rendering-json-in-grails-part-3-customise-your-json-with-object-marshallers/
 		//TODO: alternative from http://compiledammit.com/2012/08/16/custom-json-marshalling-in-grails-done-right/
+		//TODO (simple): (test to) apply this config. into the respective domain object 
 		JSON.registerObjectMarshaller( MeLiItem ) { MeLiItem item ->
 		    return [
 		            title : item.title,

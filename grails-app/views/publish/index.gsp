@@ -6,13 +6,12 @@
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
 </head>
 <body>
-	<g:form url="[action:'publishToMeLi']">
-		<g:hiddenField name="productId" value="${product.prestaShopId}"/>
+	<g:form url="[action:'publish']">
 		<fieldset>
 			<div>
 				<!-- TODO: i18n for labels ? -->
 				<label>Titulo: </label>
-				<span>${product.name}</span>
+				<span>${session.item.title}</span>
 			</div>
 			<!-- TODO: used field ?-->
 			<!-- div>
@@ -20,17 +19,17 @@
 				<g:textField name="subtitle"/>
 			</div-->
 			<div>
-				<label>Descripcion: </label>
-				<div class="itemDescription">${product.description}</div>
+			<g:each in="${session.item.pictures}">
+				<img src="${it.source}" higth="250" width="250" />
+			</g:each>			
 			</div>
 			<div>
-				<!-- TODO imagenes  -->
-				<label>Imagen: </label>
-				<g:textField name="pictures[0].source"/>
+				<label>Descripcion: </label>
+				<div class="itemDescription">${session.item.description}</div>
 			</div>
 			<div>
 				<label>Precio: $</label>
-				<span>${product.price}</span>
+				<span>${session.item.price}</span>
 			</div>
 			<hr/>
 			<!-- TODO valor init de stock  -->
@@ -40,7 +39,7 @@
 			</div>
 			<div>
 				<label>Garantía: </label>
-				<g:textField name="warranty"/>
+				<g:textField name="warranty" value="${session.item.warranty}"/>
 			</div>
 			<!-- TODO seleccion de los siguientes campos (si aplica)  -->
 			<div>

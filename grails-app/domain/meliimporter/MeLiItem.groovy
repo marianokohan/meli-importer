@@ -37,7 +37,10 @@ class MeLiItem {
 		title = "[_TESTING_] " + product.name;
 		description = product.description;
 		price = product.price;
-		//TODO: images
+		product.images.each { image ->
+			pictures.add(new ItemPicture(source: image));
+		}
+		warranty = "-" //TODO: something better?
 	}
 	
 	public boolean isActive() {

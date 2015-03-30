@@ -43,8 +43,5 @@
 			</ul>
 		</div>
 	</g:each>
-	<div>
-		<g:link action="publishTest">Publish (test)</g:link>
-	</div>
 </div>
 </g:else>

@@ -4,6 +4,7 @@
 	<!-- TODO product(s) tag -->
 		<div>
 			<h4>${it.name}</h4>
+			<img src="${it.images[0]}" higth="150" width="150" />
 			<div>${it.description}</div>
 			<ul>
 				<li><b>$ </b>${it.price}</li>
@@ -13,7 +14,7 @@
 				</g:if>
 				<!-- TODO: como pasar objeto product como parametro (¿es posible?) ? -->
 				<g:if test="${session.meliUser != null }">
-					<g:link action="publish" params="[productId: it.prestaShopId]">Publish</g:link>
+					<g:link controller="publish" params="[productId: it.prestaShopId]">Publish</g:link>
 				</g:if>					
 			</ul>
 		</div>

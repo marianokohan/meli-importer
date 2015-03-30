@@ -41,22 +41,4 @@ class PublicationsController {
 		['authorizationCodeUrl': meLiService.getAuthorizationUrl()]
 	}
 	
-	def publishTest() {
-		//TODO: to remove
-	}
-	
-	def publish(int productId) {
-		//TODO: better way to obtain selected product
-		// current object -> from page/controller, or handled by the service (avoid additional get from axis api)
-		['product': axisService.getProduct(productId)]
-	}
-	
-	def publishToMeLi(int productId) {
-		//TODO: same details about current product
-		MeLiItem item = new MeLiItem(axisService.getProduct(productId));
-		item.properties = params
-		meLiService.publishItem(item)
-		redirect(action: 'index')
-	}
-
 }

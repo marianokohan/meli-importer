@@ -68,6 +68,7 @@ class MeLiService {
 		Response response = m.get("/users/${user.id}/items/search?status=active&access_token=${m.accessToken}", params);
 		log.info("response: " + response.getResponseBody()) 
 		//TODO: the response of the api using java-sdk does not filter the 'active' items - this is not reproduced on the browser 
+		// idea: review java-sdk -> handling of get params
 		def items = JSON.parse(response.getResponseBody())["results"]
 		List<MeLiItem> meLiItems = new LinkedList<MeLiItem>();
 		items.each {

@@ -58,9 +58,18 @@ class AxisService {
 					 name: "${xml.product.name.language.text()}",
 					 description: "${xml.product.description.text()}",
 					 price: "${xml.product.price.text()}")
-				 //TODO: images, stock
+			     /* TODO: imagenes
+			      * lo siguiente solo funciona del lado local y no en MeLi - por los permisos de axis
+			      * => necesario configurdad uso de token - alternativas
+			      *  - en url - ej.: http://8D1G53A3XCX7TKSMGQPS34ATSPMEWET5@www.axis.com.ar/api/images/products/13/4
+			      *  - metodo de api - posible base de lo de mati
+			      * 
+			      */
+				 xml.product.associations.images.image.each { image ->
+					 product.images << "${image.@'xlink:href'}"
+				 }
 				 /*
-				  * http://www.axis.com.ar/api/images/products/13/4,
+				  * TODO: stock -> enable api, according to http://doc.prestashop.com/display/PS15/Chapter+2+-+Discovery+-+Testing+access+to+the+web+service+with+the+browser
 				  * http://www.axis.com.ar/api/stock_availables/265
 				  * "Internal error. To see this error please display the PHP errors."
 				  */

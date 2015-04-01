@@ -31,7 +31,7 @@ class AxisService {
 			   headers: [USER_AGENT: 'Apache HTTPClient'] ) { resp, xml ->
 			   xml.products.product.each { product ->
 				   def productId = Integer.parseInt("${product.@id}")
-				   if (productId < 20) { //TODO: products filtering
+				   if (8 < productId && productId < 30) { //TODO: products filtering
 					   products.add(getProduct(productId))
 				   }
 			   }

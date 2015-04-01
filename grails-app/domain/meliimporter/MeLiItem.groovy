@@ -40,7 +40,14 @@ class MeLiItem {
 		product.images.each { image ->
 			pictures.add(new ItemPicture(source: image));
 		}
+		available_quantity = 1 //TODO: initial value from product?
 		warranty = "-" //TODO: something better?
+		currency_id = "ARS" //supposed default for this case
+		//TODO: base defaults
+		condition = "new"
+		buying_mode = "buy_it_now"
+		listing_type_id = "free"
+		
 	}
 	
 	public boolean isActive() {

@@ -5,7 +5,9 @@ package meliImporter
 
 import grails.converters.JSON
 import grails.web.JSONBuilder
+import meliimporter.MeLiCategory
 import meliimporter.MeLiItem
+import meliimporter.MeLiListingType
 
 import org.apache.commons.logging.LogFactory
 
@@ -22,6 +24,8 @@ class MeLiService {
 	static scope = "session" //to maintain access_token on MeLi client sdk - TODO: alternative?
 	
 	private static final log = LogFactory.getLog(this)
+
+	private static final String ARG_SITE_ID = "MLA";
 	
 	private String redirectUri = "http://localhost:8080/meliImporter/publications/login";
 	def Meli m = new Meli(6843475917972468, "gB9MQrFecL1rKvlQhHxJvnshUJ20PRgW")
@@ -38,7 +42,7 @@ class MeLiService {
 		FluentStringsMap params = new FluentStringsMap();
 		params.add("access_token", m.getAccessToken());
 		Response response = m.get("/users/me", params);
-		log.info("response: " + response.getResponseBody())
+		log.info("auth response: " + response.getResponseBody())
 		return new MeLiUser(JSON.parse(response.getResponseBody()))
 	}
 
@@ -46,7 +50,7 @@ class MeLiService {
 		FluentStringsMap params = new FluentStringsMap();
 		params.add("access_token", m.getAccessToken());
 		def createTestUserJson = new JSONBuilder().build {
-			site_id = "MLA"
+			site_id = ARG_SITE_ID
 		}
 		Response response = m.post("/users/test_user?access_token=${m.accessToken}", params, createTestUserJson.toString());
 		log.info("createTestUser response: " + response.getResponseBody())
@@ -57,16 +61,16 @@ class MeLiService {
 		FluentStringsMap params = new FluentStringsMap();
 		params.add("access_token", m.getAccessToken());
 		Response response = m.get("/items/${id}", params);
-		log.info("response: " + response.getResponseBody())
+//		log.info("response: " + response.getResponseBody())
 		return new MeLiItem(JSON.parse(response.getResponseBody()))
 	}
 
 	public getUserPublications(MeLiUser user) {
 		FluentStringsMap params = new FluentStringsMap();
 		params.add("access_token", m.getAccessToken());
-		log.info("/users/${user.id}/items/search?status=active&access_token=${m.accessToken}")
+//		log.info("/users/${user.id}/items/search?status=active&access_token=${m.accessToken}")
 		Response response = m.get("/users/${user.id}/items/search?status=active&access_token=${m.accessToken}", params);
-		log.info("response: " + response.getResponseBody()) 
+		log.info("user publications response: " + response.getResponseBody()) 
 		//TODO: the response of the api using java-sdk does not filter the 'active' items - this is not reproduced on the browser 
 		// idea: review java-sdk -> handling of get params
 		def items = JSON.parse(response.getResponseBody())["results"]
@@ -86,6 +90,56 @@ class MeLiService {
 		JSON jsonItem = new JSON(item);
 		Response response = m.post("/items?access_token=${m.accessToken}", params, jsonItem.toString());
 		log.info("publishItem response: " + response.getResponseBody()) 
+	}
+		
+	public MeLiCategory getCategory(String categoryId) {
+		FluentStringsMap params = new FluentStringsMap();
+		params.add("access_token", m.getAccessToken());
+		Response response = m.get("/categories/${categoryId}", params);
+		log.info("category response: " + response.getResponseBody())
+		return new MeLiCategory(JSON.parse(response.getResponseBody()))
+	}
+	
+	public List<MeLiCategory> getCategories(String siteId) {
+		FluentStringsMap params = new FluentStringsMap();
+		params.add("access_token", m.getAccessToken());
+		Response response = m.get("/sites/${siteId}/categories", params);
+		log.info("categories response: " + response.getResponseBody())
+		def categoriesJSONArray = JSON.parse(response.getResponseBody());
+		List<MeLiCategory> categories = new LinkedList<MeLiCategory>();
+		categoriesJSONArray.each { category ->
+			categories << new MeLiCategory(category);
+		}
+		return categories;
+	}
+	
+	/**
+	 * categories for Argentina
+	 * @return
+	 */
+	public List<MeLiCategory> getCategories() {
+		return getCategories(ARG_SITE_ID);
+	}
+	
+	public List<MeLiListingType> getListingTypes(String siteId) {
+		FluentStringsMap params = new FluentStringsMap();
+		params.add("access_token", m.getAccessToken());
+		Response response = m.get("/sites/${siteId}/listing_types", params);
+		log.info("response categories: " + response.getResponseBody())
+		def listingTypesJSONArray = JSON.parse(response.getResponseBody());
+		List<MeLiListingType> listingTypes = new LinkedList<MeLiListingType>();
+		listingTypesJSONArray.each { listingType ->
+			listingTypes << new MeLiListingType(listingType);
+		}
+		return listingTypes;
+	}
+	
+	/**
+	 * listing Types for Argentina
+	 * @return
+	 */
+	public List<MeLiListingType> getListingTypes() {
+		return getListingTypes(ARG_SITE_ID);
 	}
 		
 }

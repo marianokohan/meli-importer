@@ -617,3 +617,8 @@ fieldset hr,
 fieldset input#publish {
 	margin: 20px 0;
 }
+
+div.categories {
+	margin-left: 90px;
+	margin-top: -18px;
+}

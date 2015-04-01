@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="US-ASCII">
-<title>Publish</title>
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+	<meta charset="US-ASCII">
+	<title>Publish</title>
+	<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
+	<g:javascript library='jquery' />
+	<r:layoutResources />
 </head>
 <body>
-	<g:form url="[action:'publish']">
+	<g:form name="publishForm" url="[action:'publish']">
 		<fieldset>
 			<div>
 				<!-- TODO: i18n for labels ? -->
@@ -32,10 +34,9 @@
 				<span>${session.item.price}</span>
 			</div>
 			<hr/>
-			<!-- TODO valor init de stock  -->
 			<div>
 				<label>Cantidad: </label>
-				<g:textField name="available_quantity" value="1"/><!-- for the fixed category -->
+				<g:textField name="available_quantity" value="${session.item.available_quantity}"/>
 			</div>
 			<div>
 				<label>Garantía: </label>
@@ -43,29 +44,43 @@
 			</div>
 			<!-- TODO seleccion de los siguientes campos (si aplica)  -->
 			<div>
-				<label>Moneda</label>
-				<g:textField name="currency_id" value="ARS"/>
-			</div>
-			<div>
 				<label>Estado: </label>
-				<g:textField name="condition" value="new"/>
+				<span>Nuevo</span>
+				<!-- label en base a valor - session.item.condition  -->
 			</div>
 			<div>
 				<label>Modo de compra:</label>
-				<g:textField name="buying_mode" value="buy_it_now"/>
+				<span>Inmediata</span>
+				<!-- label en base a valor - session.item.buying_mode  -->
 			</div>
 			<div>
 				<label>Tipo de listado: </label>
-				<g:textField name="listing_type_id" value="free"/>
+				<g:select name="listing_type_id" value="${session.item.listing_type_id}"
+					from="${meLiService.getListingTypes()}"
+					optionValue="name" optionKey="id"/>
 			</div>
 			<div>
-				<!-- TODO: campos de valores fijos => selección ? -->
 				<label>Categoría</label>
-				<g:textField name="category_id" value="MLA86029"/>
+				<div class="categories">
+		            <g:select id="category_1" name="category_id.1" from="${meLiService.getCategories()}" 
+			            optionKey="id" optionValue="name"
+	                    onchange="categoryChanged(this.value, 2);"/>
+	                <br/>
+	                <div id="container_Category_2"></div>
+                </div>
+                <script>
+			         function categoryChanged(categoryId, level) {
+				         //implemented directly instead of using remoteFunction to allow use dinamic id for the span to update
+			             jQuery.ajax({type:'POST',data:'categoryId='+categoryId+'&level='+level, url:'/meliImporter/publish/categoryChanged',
+				             success:function(data,textStatus){jQuery('#container_Category_'+level).html(data);},
+				             error:function(XMLHttpRequest,textStatus,errorThrown){}});
+			         }
+			     </script>
+			
 			</div>
 			
-			<g:submitButton name="publish" value="Publish" />
 		</fieldset>
 	</g:form>
+	<r:layoutResources />
 </body>
 </html>
